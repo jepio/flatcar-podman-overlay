@@ -56,6 +56,10 @@ PDEPEND="sys-auth/polkit[gtk?,kde?]"
 
 README_GENTOO_SUFFIX=""
 
+PATCHES=(
+	"${FILESDIR}/0001-use-altRootDir-for-flatcar-as-well.patch"
+)
+
 pkg_setup() {
 	if use apparmor; then
 		CONFIG_CHECK+=" ~SECURITY_APPARMOR"
