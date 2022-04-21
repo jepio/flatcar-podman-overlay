@@ -7,4 +7,4 @@ container:
 	docker build -t $(TAG) --build-arg FLATCAR_VERSION=$(FLATCAR_VERSION) .
 
 run: container
-	docker run -it --rm -v $(PWD):$(OVERLAY_DIR) -w $(OVERLAY_DIR) $(TAG)
+	docker run -it --rm -v $(PWD):/out $(TAG)
