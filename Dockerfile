@@ -16,6 +16,7 @@ RUN emerge -j4 --getbinpkg --autounmask-write --autounmask-continue --onlydeps s
 RUN emerge -j4 --getbinpkg --buildpkgonly snapd
 RUN emerge --root=/work --nodeps --usepkgonly snapd squashfs-tools
 RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LEVEL=1.0' >/work/usr/lib/extension-release.d/extension-release.snapd
+RUN mkdir -p /work/usr/src
 RUN mkdir -p /output && mksquashfs /work /output/snapd.raw -noappend
 
 FROM busybox
