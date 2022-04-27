@@ -6,19 +6,17 @@ CMD ["/bin/bash"]
 
 RUN emerge-gitclone
 RUN echo 'FEATURES="-network-sandbox -pid-sandbox -ipc-sandbox -usersandbox -sandbox"' >>/etc/portage/make.conf
-RUN mkdir -p /etc/portage/package.accept_keywords && \
-  echo 'app-containers/snapd ~*' >/etc/portage/package.accept_keywords/snapd
-COPY repos.conf /etc/portage/repos.conf/snapd.conf
-COPY . /var/lib/portage/snapd-overlay/
+COPY repos.conf /etc/portage/repos.conf/podman.conf
+COPY . /var/lib/portage/podman-overlay/
 
 FROM base AS builder
-RUN emerge -j4 --getbinpkg --autounmask-write --autounmask-continue --onlydeps snapd
-RUN emerge -j4 --getbinpkg --buildpkgonly snapd
-RUN emerge --root=/work --nodeps --usepkgonly snapd squashfs-tools
-RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LEVEL=1.0' >/work/usr/lib/extension-release.d/extension-release.snapd
+RUN emerge -j4 --getbinpkg --autounmask-write --autounmask-continue --onlydeps podman
+RUN emerge -j4 --getbinpkg --buildpkgonly podman
+RUN emerge --root=/work --nodeps --usepkgonly podman
+RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LEVEL=1.0' >/work/usr/lib/extension-release.d/extension-release.podman
 RUN mkdir -p /work/usr/src
-RUN mkdir -p /output && mksquashfs /work /output/snapd.raw -noappend
+RUN mkdir -p /output && mksquashfs /work /output/podman.raw -noappend
 
 FROM busybox
 COPY --from=builder /output /output
-CMD ["cp", "/output/snapd.raw", "/out"]
+CMD ["cp", "/output/podman.raw", "/out"]
