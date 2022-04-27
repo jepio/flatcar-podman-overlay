@@ -7,5 +7,8 @@ snapd.raw: container
 
 .PHONY: container
 container:
-	docker build -t $(TAG) --build-arg FLATCAR_VERSION=$(FLATCAR_VERSION) .
+	docker build -t $(TAG) --build-arg FLATCAR_VERSION=$(FLATCAR_VERSION) $(TARGET) .
 
+
+base: TARGET=--target base
+base: container
