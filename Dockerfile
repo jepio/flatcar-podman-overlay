@@ -21,6 +21,9 @@ RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LE
 RUN mkdir -p /work/usr/src
 RUN mv /work/etc /work/usr/etc
 COPY usr /work/usr
+RUN mv /work/opt/cni /work/usr/lib/cni
+RUN rm -rf /work/var /work/usr/include /work/usr/lib*/cmake
+RUN rmdir /work/opt
 RUN mkdir -p /output && mksquashfs /work /output/podman.raw -noappend
 
 FROM busybox
