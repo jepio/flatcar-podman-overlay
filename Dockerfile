@@ -26,6 +26,12 @@ RUN rm -rf /work/var /work/usr/include /work/usr/lib*/cmake /work/opt/cni
 RUN rmdir /work/opt
 RUN mkdir -p /output && mksquashfs /work /output/podman.raw -noappend
 
+FROM busybox AS torcx
+RUN mkdir /work /output
+COPY torcx /work
+RUN tar -zcvf /output/docker:podman.torcx.tgz -C /work .
+
 FROM busybox
 COPY --from=staging /output /output
-CMD ["cp", "/output/podman.raw", "/out"]
+COPY --from=torcx /output /output
+CMD ["cp", "/output/podman.raw", "/output/docker:podman.torcx.tgz", "/out"]
