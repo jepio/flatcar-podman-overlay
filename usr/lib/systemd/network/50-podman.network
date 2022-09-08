@@ -1,0 +1,7 @@
+[Match]
+Type=bridge
+Name=cni-* br-*
+
+[Link]
+Unmanaged=yes
+
