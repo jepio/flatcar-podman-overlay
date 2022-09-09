@@ -1,0 +1,6 @@
+[Match]
+Driver=veth
+
+[Link]
+Unmanaged=yes
+

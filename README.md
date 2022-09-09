@@ -1,16 +1,20 @@
 # Build
 
 ```
-make snapd.raw
+make podman.raw
 ```
 
 # Use
 
-Copy snapd.raw to /etc/extensions.
+Copy podman.raw to /etc/extensions.
 
 Disable selinux in /etc/selinux/config - must be disabled not permissive. Default file is a symlink so make a copy (`cp /etc/selinux/config{,-}; mv /etc/selinux/config{-,}`)
 
-Run `systemctl enable --now snapd.socket`
+Symlink the CNI plugins `ln -sf /usr/lib/cni/ /opt/cni/`
+
+Copy configs from /usr/etc/ into the appropriate directories in /etc.  Remove the .example extensions.
+
+Run `systemctl enable --now podman.socket`
 
 # Test
 
@@ -19,4 +23,4 @@ snap install hello-world
 snap run hello-world
 ```
 
-To make snaps accessible, add /var/lib/snapd/snap/bin to $PATH.
+To make snaps accessible, add /var/lib/podman/snap/bin to $PATH.

@@ -1,4 +1,4 @@
-ARG FLATCAR_VERSION=3200.0.0
+ARG FLATCAR_VERSION=3227.2.2
 
 FROM mediadepot/flatcar-developer:${FLATCAR_VERSION} AS base
 
@@ -21,8 +21,17 @@ RUN mkdir -p /work/usr/lib/extension-release.d && echo -e 'ID=flatcar\nSYSEXT_LE
 RUN mkdir -p /work/usr/src
 RUN mv /work/etc /work/usr/etc
 COPY usr /work/usr
+RUN mv /work/opt/cni/bin /work/usr/lib/cni
+RUN rm -rf /work/var /work/usr/include /work/usr/lib*/cmake /work/opt/cni
+RUN rmdir /work/opt
 RUN mkdir -p /output && mksquashfs /work /output/podman.raw -noappend
+
+FROM busybox AS torcx
+RUN mkdir /work /output
+COPY torcx /work
+RUN tar -zcvf /output/docker:podman.torcx.tgz -C /work .
 
 FROM busybox
 COPY --from=staging /output /output
-CMD ["cp", "/output/podman.raw", "/out"]
+COPY --from=torcx /output /output
+CMD ["cp", "/output/podman.raw", "/output/docker:podman.torcx.tgz", "/out"]
