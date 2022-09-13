@@ -1,0 +1,6 @@
+*.swp
+*.tar.gz
+*.tgz
+*.raw
+/podman-versions.txt
+
